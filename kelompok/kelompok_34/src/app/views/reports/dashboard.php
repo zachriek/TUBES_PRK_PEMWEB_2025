@@ -90,8 +90,8 @@ require_once BASE_PATH . '/src/app/views/layouts/header.php';
       <i data-lucide="trending-up" class="w-5 h-5"></i>
       Grafik Penjualan 6 Bulan Terakhir
     </h2>
-    <div class="bg-white/10 rounded-xl p-4">
-      <canvas id="salesChart" class="w-full" height="80"></canvas>
+    <div class="bg-white/10 rounded-xl p-6">
+      <canvas id="salesChart" class="w-full" height="120"></canvas>
     </div>
   </div>
 
