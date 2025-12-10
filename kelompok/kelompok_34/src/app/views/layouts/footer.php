@@ -80,7 +80,7 @@
   </div>
 </footer>
 
-<script src="../public/assets/js/main.js"></script>
+<script src="<?= BASE_URL ?>/public/assets/js/main.js"></script>
 </body>
 
 </html>
