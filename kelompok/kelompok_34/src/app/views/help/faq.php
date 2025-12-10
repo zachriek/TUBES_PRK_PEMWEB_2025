@@ -22,17 +22,17 @@
   <!-- Search FAQ (Optional Enhancement) -->
   <div class="glass-effect p-4 rounded-2xl mb-6">
     <div class="relative">
-      <input type="text" 
-             id="searchFAQ" 
-             placeholder="🔍 Cari pertanyaan..."
-             class="input-modern w-full px-4 py-3 rounded-xl text-white placeholder-gray-400 outline-none"
-             oninput="searchFAQs(this.value)">
+      <input type="text"
+        id="searchFAQ"
+        placeholder="🔍 Cari pertanyaan..."
+        class="input-modern w-full px-4 py-3 rounded-xl text-white placeholder-gray-100 outline-none"
+        oninput="searchFAQs(this.value)">
     </div>
   </div>
 
   <!-- FAQ Categories -->
   <div class="space-y-4" id="faqContainer">
-    
+
     <!-- Umum -->
     <div class="glass-effect rounded-2xl overflow-hidden faq-item" data-category="umum">
       <button onclick="toggleFAQ(this)" class="w-full p-6 text-left flex items-center justify-between hover:bg-white/10 transition">
@@ -352,55 +352,55 @@
 </div>
 
 <script>
-function toggleFAQ(button) {
-  const content = button.nextElementSibling;
-  const icon = button.querySelector('[data-lucide="chevron-down"]');
-  
-  // Close all other FAQs
-  document.querySelectorAll('.faq-content').forEach(item => {
-    if (item !== content && !item.classList.contains('hidden')) {
-      item.classList.add('hidden');
-      const otherIcon = item.previousElementSibling.querySelector('[data-lucide="chevron-down"]');
-      if (otherIcon) otherIcon.style.transform = 'rotate(0deg)';
-    }
-  });
-  
-  // Toggle current FAQ
-  content.classList.toggle('hidden');
-  
-  // Rotate icon with smooth transition
-  if (content.classList.contains('hidden')) {
-    icon.style.transform = 'rotate(0deg)';
-  } else {
-    icon.style.transform = 'rotate(180deg)';
-  }
-  
-  // Reinitialize Lucide icons
-  lucide.createIcons();
-}
+  function toggleFAQ(button) {
+    const content = button.nextElementSibling;
+    const icon = button.querySelector('[data-lucide="chevron-down"]');
 
-function searchFAQs(keyword) {
-  const items = document.querySelectorAll('.faq-item');
-  const lowerKeyword = keyword.toLowerCase();
-  let visibleCount = 0;
-  
-  items.forEach(item => {
-    const title = item.querySelector('h3').textContent.toLowerCase();
-    const content = item.querySelector('.faq-content').textContent.toLowerCase();
-    
-    if (title.includes(lowerKeyword) || content.includes(lowerKeyword)) {
-      item.style.display = 'block';
-      visibleCount++;
-    } else {
-      item.style.display = 'none';
-    }
-  });
-  
-  // If no keyword, show all
-  if (keyword === '') {
-    items.forEach(item => {
-      item.style.display = 'block';
+    // Close all other FAQs
+    document.querySelectorAll('.faq-content').forEach(item => {
+      if (item !== content && !item.classList.contains('hidden')) {
+        item.classList.add('hidden');
+        const otherIcon = item.previousElementSibling.querySelector('[data-lucide="chevron-down"]');
+        if (otherIcon) otherIcon.style.transform = 'rotate(0deg)';
+      }
     });
+
+    // Toggle current FAQ
+    content.classList.toggle('hidden');
+
+    // Rotate icon with smooth transition
+    if (content.classList.contains('hidden')) {
+      icon.style.transform = 'rotate(0deg)';
+    } else {
+      icon.style.transform = 'rotate(180deg)';
+    }
+
+    // Reinitialize Lucide icons
+    lucide.createIcons();
   }
-}
+
+  function searchFAQs(keyword) {
+    const items = document.querySelectorAll('.faq-item');
+    const lowerKeyword = keyword.toLowerCase();
+    let visibleCount = 0;
+
+    items.forEach(item => {
+      const title = item.querySelector('h3').textContent.toLowerCase();
+      const content = item.querySelector('.faq-content').textContent.toLowerCase();
+
+      if (title.includes(lowerKeyword) || content.includes(lowerKeyword)) {
+        item.style.display = 'block';
+        visibleCount++;
+      } else {
+        item.style.display = 'none';
+      }
+    });
+
+    // If no keyword, show all
+    if (keyword === '') {
+      items.forEach(item => {
+        item.style.display = 'block';
+      });
+    }
+  }
 </script>

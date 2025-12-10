@@ -6,7 +6,7 @@ class Product extends Model
 
     public function getAll()
     {
-        $stmt = $this->db->prepare("SELECT * FROM {$this->table} ORDER BY name ASC");
+        $stmt = $this->db->prepare("SELECT * FROM {$this->table} ORDER BY ID DESC");
         $stmt->execute();
         return $stmt->fetchAll();
     }
@@ -22,9 +22,9 @@ class Product extends Model
     {
         $sql = "INSERT INTO {$this->table} (name, price, stock, image) 
                 VALUES (:name, :price, :stock, :image)";
-        
+
         $stmt = $this->db->prepare($sql);
-        
+
         return $stmt->execute([
             'name' => $data['name'],
             'price' => $data['price'],
@@ -38,9 +38,9 @@ class Product extends Model
         $sql = "UPDATE {$this->table} 
                 SET name = :name, price = :price, stock = :stock, image = :image 
                 WHERE id = :id";
-        
+
         $stmt = $this->db->prepare($sql);
-        
+
         return $stmt->execute([
             'id' => $id,
             'name' => $data['name'],

@@ -64,7 +64,7 @@
     </div>
 
     <center class="no-print" style="margin-top: 20px;">
-        <a href="<?= BASE_URL ?>/pos">Kembali ke Kasir</a>
+        <a href="<?= BASE_URL ?>/pos/payment-finish">Kembali</a>
     </center>
 
 </body>

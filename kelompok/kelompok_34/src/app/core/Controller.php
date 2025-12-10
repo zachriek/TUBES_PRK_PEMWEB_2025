@@ -25,4 +25,15 @@ class Controller
     require $viewPath;
     require BASE_PATH . '/src/app/views/layouts/footer.php';
   }
+
+  public function plainView($view, $data = [])
+  {
+    $viewPath = BASE_PATH . '/src/app/views/' . $view . '.php';
+    if (!file_exists($viewPath)) {
+      http_response_code(404);
+      $viewPath = BASE_PATH . '/src/app/views/errors/404.php';
+    }
+    extract($data);
+    require $viewPath;
+  }
 }

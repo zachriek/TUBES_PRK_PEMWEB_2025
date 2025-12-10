@@ -189,7 +189,13 @@ UPDATE products SET category = 'makanan' WHERE name LIKE '%ayam%' OR name LIKE '
 UPDATE products SET category = 'minuman' WHERE name LIKE '%es%' OR name LIKE '%kopi%' OR name LIKE '%jus%';
 UPDATE products SET category = 'snack' WHERE name LIKE '%kentang%';
 
-ALTER TABLE transactions 
-ADD COLUMN payment_method VARCHAR(20) DEFAULT 'CASH',
-ADD COLUMN pay_amount DECIMAL(10,2) DEFAULT 0,
-ADD COLUMN change_amount DECIMAL(10,2) DEFAULT 0;
+ALTER TABLE `transactions` 
+ADD COLUMN `midtrans_order_id` VARCHAR(100) NULL AFTER `id`,
+ADD COLUMN `midtrans_snap_token` VARCHAR(255) NULL AFTER `midtrans_order_id`,
+ADD COLUMN `midtrans_transaction_status` ENUM('pending', 'settlement', 'capture', 'deny', 'cancel', 'expire', 'failure') NULL AFTER `midtrans_snap_token`,
+ADD COLUMN `midtrans_payment_type` VARCHAR(50) NULL AFTER `midtrans_transaction_status`,
+ADD INDEX `idx_midtrans_order` (`midtrans_order_id`);
+
+-- Update payment_method enum to include more options
+ALTER TABLE `transactions` 
+MODIFY COLUMN `payment_method` ENUM('CASH', 'QRIS', 'TRANSFER', 'MIDTRANS') DEFAULT 'CASH';
