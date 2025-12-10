@@ -80,9 +80,7 @@
   </div>
 </footer>
 
-<script>
-  lucide.createIcons();
-</script>
+<script src="/public/assets/js/main.js"></script>
 </body>
 
 </html>

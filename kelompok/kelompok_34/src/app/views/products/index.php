@@ -8,8 +8,8 @@
                 </h1>
                 <p class="text-gray-200 mt-2">Manajemen data produk UMKM</p>
             </div>
-            <a href="<?= BASE_URL ?>/product/create" 
-               class="btn-primary px-6 py-3 rounded-xl font-semibold flex items-center gap-2">
+            <a href="<?= BASE_URL ?>/product/create"
+                class="btn-primary px-6 py-3 rounded-xl font-semibold flex items-center gap-2">
                 <i data-lucide="plus-circle" class="w-5 h-5"></i>
                 Tambah Produk
             </a>
@@ -58,7 +58,7 @@
                             <tr class="border-t border-white/10 hover:bg-white/5 transition">
                                 <td class="px-6 py-4"><?= $p['id'] ?></td>
                                 <td class="px-6 py-4 font-semibold"><?= htmlspecialchars($p['name']) ?></td>
-                                <td class="px-6 py-4 text-blue-300">
+                                <td class="px-6 py-4 text-gray-100">
                                     Rp <?= number_format($p['price'], 0, ',', '.') ?>
                                 </td>
                                 <td class="px-6 py-4">
@@ -67,14 +67,14 @@
                                     </span>
                                 </td>
                                 <td class="px-6 py-4">
-                                    <?php 
+                                    <?php
                                     $imagePath = BASE_URL . "/public/uploads/products/" . $p['image'];
                                     $imageExists = file_exists(BASE_PATH . "/src/public/uploads/products/" . $p['image']);
                                     ?>
                                     <?php if ($imageExists && $p['image'] !== 'default.jpg'): ?>
-                                        <img src="<?= $imagePath ?>" 
-                                             alt="<?= htmlspecialchars($p['name']) ?>"
-                                             class="w-16 h-16 object-cover rounded-lg border-2 border-white/10">
+                                        <img src="<?= $imagePath ?>"
+                                            alt="<?= htmlspecialchars($p['name']) ?>"
+                                            class="w-16 h-16 object-cover rounded-lg border-2 border-white/10">
                                     <?php else: ?>
                                         <div class="w-16 h-16 bg-gradient-to-br from-blue-500/30 to-purple-500/30 rounded-lg flex items-center justify-center">
                                             <i data-lucide="package" class="w-8 h-8 text-blue-200"></i>
@@ -83,13 +83,13 @@
                                 </td>
                                 <td class="px-6 py-4">
                                     <div class="flex justify-center gap-2">
-                                        <a href="<?= BASE_URL ?>/product/edit/<?= $p['id'] ?>" 
-                                           class="glass-effect px-4 py-2 rounded-lg hover:bg-blue-500/20 transition flex items-center gap-2">
+                                        <a href="<?= BASE_URL ?>/product/edit/<?= $p['id'] ?>"
+                                            class="glass-effect px-4 py-2 rounded-lg hover:bg-blue-500/20 transition flex items-center gap-2">
                                             <i data-lucide="edit" class="w-4 h-4"></i>
                                             Edit
                                         </a>
-                                        <button onclick="confirmDelete(<?= $p['id'] ?>, '<?= htmlspecialchars($p['name']) ?>')" 
-                                                class="glass-effect px-4 py-2 rounded-lg hover:bg-red-500/20 text-red-300 transition flex items-center gap-2">
+                                        <button onclick="confirmDelete(<?= $p['id'] ?>, '<?= htmlspecialchars($p['name']) ?>')"
+                                            class="glass-effect px-4 py-2 rounded-lg hover:bg-red-500/20 text-red-300 transition flex items-center gap-2">
                                             <i data-lucide="trash-2" class="w-4 h-4"></i>
                                             Hapus
                                         </button>
@@ -105,9 +105,9 @@
 </div>
 
 <script>
-function confirmDelete(id, name) {
-    if (confirm(`Yakin ingin menghapus produk "${name}"?`)) {
-        window.location.href = '<?= BASE_URL ?>/product/delete/' + id;
+    function confirmDelete(id, name) {
+        if (confirm(`Yakin ingin menghapus produk "${name}"?`)) {
+            window.location.href = '<?= BASE_URL ?>/product/delete/' + id;
+        }
     }
-}
 </script>

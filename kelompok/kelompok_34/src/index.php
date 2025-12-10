@@ -4,6 +4,25 @@ error_reporting(E_ALL);
 
 define('BASE_PATH', dirname(__DIR__));
 
+$requestUri = $_SERVER['REQUEST_URI'];
+$baseUrl = '/TUBES_PRK_PEMWEB_2025/kelompok/kelompok_34/src';
+
+if (strpos($requestUri, $baseUrl . '/public/') === 0) {
+  $filePath = BASE_PATH . '/src' . str_replace($baseUrl, '', $requestUri);
+
+  if (file_exists($filePath)) {
+    $mime = mime_content_type($filePath);
+    header("Content-Type: $mime");
+    readfile($filePath);
+    exit;
+  }
+
+  http_response_code(404);
+  echo "File not found.";
+  exit;
+}
+
+
 require BASE_PATH . '/src/app/config/config.php';
 require BASE_PATH . '/src/app/config/database.php';
 require BASE_PATH . '/src/app/core/App.php';

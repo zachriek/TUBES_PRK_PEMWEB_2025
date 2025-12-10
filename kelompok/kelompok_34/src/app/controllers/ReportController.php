@@ -1,21 +1,13 @@
 <?php
 
-
-class ReportController
+class ReportController extends Controller
 {
   private $reportModel;
 
   public function __construct()
   {
-    // Check if user is logged in and is admin
-    session_start();
-    if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'admin') {
-      header('Location: ' . BASE_URL . '/auth/login');
-      exit;
-    }
-
-    require_once BASE_PATH . '/src/app/models/Report.php';
-    $this->reportModel = new Report();
+    requireAdmin();
+    $this->reportModel = $this->model('Report');
   }
 
   // Halaman utama laporan penjualan
@@ -81,13 +73,6 @@ class ReportController
       'summary' => $summary
     ];
 
-    $this->view('reports/print', $data);
-  }
-
-  // Helper untuk load view
-  private function view($view, $data = [])
-  {
-    extract($data);
-    require_once BASE_PATH . '/src/app/views/' . $view . '.php';
+    $this->plainView('reports/print', $data);
   }
 }

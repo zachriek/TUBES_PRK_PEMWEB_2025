@@ -13,14 +13,23 @@ class App
     if (isset($url[0]) && file_exists(BASE_PATH . '/src/app/controllers/' . ucfirst($url[0]) . 'Controller.php')) {
       $this->controller = ucfirst($url[0]) . 'Controller';
       unset($url[0]);
+    } else {
+      $this->notFound();
     }
 
     require BASE_PATH . '/src/app/controllers/' . $this->controller . '.php';
     $this->controller = new $this->controller;
 
-    if (isset($url[1]) && method_exists($this->controller, $url[1])) {
-      $this->method = $url[1];
-      unset($url[1]);
+    if (isset($url[1])) {
+      $methodName = str_replace('-', ' ', $url[1]);
+      $methodName = str_replace(' ', '', lcfirst(ucwords($methodName)));
+
+      if (method_exists($this->controller, $methodName)) {
+        $this->method = $methodName;
+        unset($url[1]);
+      } else {
+        $this->notFound();
+      }
     }
 
     $this->params = $url ? array_values($url) : [];
@@ -43,5 +52,14 @@ class App
     }
 
     return ['pos'];
+  }
+
+  private function notFound()
+  {
+    http_response_code(404);
+    require BASE_PATH . '/src/app/views/layouts/header.php';
+    require BASE_PATH . '/src/app/views/errors/404.php';
+    require BASE_PATH . '/src/app/views/layouts/footer.php';
+    exit;
   }
 }

@@ -1,16 +1,7 @@
 <?php
 
-
-class Report
+class Report extends Model
 {
-  private $db;
-
-  public function __construct()
-  {
-    require_once BASE_PATH . '/database/database.php';
-    $this->db = getDBConnection();
-  }
-
   // Get transactions with filter (date range and product)
   public function getTransactionsWithFilter($filter)
   {
@@ -74,7 +65,7 @@ class Report
               COALESCE(SUM(total_amount), 0) as revenue
             FROM transactions 
             WHERE DATE(created_at) = CURDATE()";
-    
+
     $stmt = $this->db->query($sql);
     return $stmt->fetch(PDO::FETCH_ASSOC);
   }
@@ -88,7 +79,7 @@ class Report
             FROM transactions 
             WHERE MONTH(created_at) = MONTH(CURDATE()) 
             AND YEAR(created_at) = YEAR(CURDATE())";
-    
+
     $stmt = $this->db->query($sql);
     return $stmt->fetch(PDO::FETCH_ASSOC);
   }
@@ -101,7 +92,7 @@ class Report
               COALESCE(SUM(total_amount), 0) as revenue
             FROM transactions 
             WHERE YEAR(created_at) = YEAR(CURDATE())";
-    
+
     $stmt = $this->db->query($sql);
     return $stmt->fetch(PDO::FETCH_ASSOC);
   }
@@ -117,7 +108,7 @@ class Report
             GROUP BY td.product_id
             ORDER BY total_sold DESC
             LIMIT ?";
-    
+
     $stmt = $this->db->prepare($sql);
     $stmt->execute([$limit]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -131,7 +122,7 @@ class Report
             JOIN users u ON t.user_id = u.id
             ORDER BY t.created_at DESC
             LIMIT ?";
-    
+
     $stmt = $this->db->prepare($sql);
     $stmt->execute([$limit]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -148,7 +139,7 @@ class Report
             WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
             GROUP BY DATE_FORMAT(created_at, '%Y-%m')
             ORDER BY month ASC";
-    
+
     $stmt = $this->db->query($sql);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
   }
@@ -164,16 +155,16 @@ class Report
             WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
             GROUP BY DATE(created_at)
             ORDER BY date ASC";
-    
+
     $stmt = $this->db->query($sql);
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
+
     // Fill missing dates with zero values
     $data = [];
     for ($i = 6; $i >= 0; $i--) {
       $date = date('Y-m-d', strtotime("-$i days"));
       $found = false;
-      
+
       foreach ($results as $row) {
         if ($row['date'] === $date) {
           $data[] = $row;
@@ -181,7 +172,7 @@ class Report
           break;
         }
       }
-      
+
       if (!$found) {
         $data[] = [
           'date' => $date,
@@ -190,7 +181,7 @@ class Report
         ];
       }
     }
-    
+
     return $data;
   }
 }

@@ -1,11 +1,14 @@
-<?php
-// File: src/app/views/reports/dashboard.php
-require_once BASE_PATH . '/src/app/views/layouts/header.php';
-?>
-
 <div class="max-w-7xl mx-auto">
   <!-- Header -->
   <div class="glass-effect rounded-2xl p-6 mb-6">
+    <?php if (isset($_SESSION['success'])): ?>
+      <div class="bg-green-500/40 text-green-200 p-4 mb-6 rounded-xl border border-green-400/60 text-sm flex items-start gap-3">
+        <i data-lucide="alert-circle" class="w-5 h-5 flex-shrink-0 mt-0.5"></i>
+        <span><?= $_SESSION['success'] ?></span>
+      </div>
+    <?php unset($_SESSION['success']);
+    endif; ?>
+
     <div class="flex items-center justify-between">
       <div>
         <h1 class="text-3xl font-bold mb-2 flex items-center gap-3">
@@ -38,7 +41,7 @@ require_once BASE_PATH . '/src/app/views/layouts/header.php';
         </div>
         <div class="bg-white/10 p-4 rounded-xl">
           <p class="text-sm text-blue-100 mb-1">Pendapatan</p>
-          <p class="text-2xl font-bold">Rp <?= number_format($stats['today']['revenue']/1000, 0) ?>k</p>
+          <p class="text-2xl font-bold">Rp <?= number_format($stats['today']['revenue'] / 1000, 0) ?>k</p>
         </div>
       </div>
     </div>
@@ -58,7 +61,7 @@ require_once BASE_PATH . '/src/app/views/layouts/header.php';
         </div>
         <div class="bg-white/10 p-4 rounded-xl">
           <p class="text-sm text-blue-100 mb-1">Pendapatan</p>
-          <p class="text-2xl font-bold">Rp <?= number_format($stats['month']['revenue']/1000, 0) ?>k</p>
+          <p class="text-2xl font-bold">Rp <?= number_format($stats['month']['revenue'] / 1000, 0) ?>k</p>
         </div>
       </div>
     </div>
@@ -78,13 +81,13 @@ require_once BASE_PATH . '/src/app/views/layouts/header.php';
         </div>
         <div class="bg-white/10 p-4 rounded-xl">
           <p class="text-sm text-blue-100 mb-1">Pendapatan</p>
-          <p class="text-2xl font-bold">Rp <?= number_format($stats['year']['revenue']/1000, 0) ?>k</p>
+          <p class="text-2xl font-bold">Rp <?= number_format($stats['year']['revenue'] / 1000, 0) ?>k</p>
         </div>
       </div>
     </div>
   </div>
 
-<!-- Charts Section - Two Columns -->
+  <!-- Charts Section - Two Columns -->
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
     <!-- Daily Sales Chart (7 Days) -->
     <div class="glass-effect rounded-2xl p-6">
@@ -217,7 +220,7 @@ require_once BASE_PATH . '/src/app/views/layouts/header.php';
               size: 11
             },
             callback: function(value) {
-              return 'Rp ' + (value/1000).toLocaleString('id-ID') + 'k';
+              return 'Rp ' + (value / 1000).toLocaleString('id-ID') + 'k';
             }
           },
           grid: {
@@ -308,7 +311,7 @@ require_once BASE_PATH . '/src/app/views/layouts/header.php';
               size: 11
             },
             callback: function(value) {
-              return 'Rp ' + (value/1000).toLocaleString('id-ID') + 'k';
+              return 'Rp ' + (value / 1000).toLocaleString('id-ID') + 'k';
             }
           },
           grid: {
@@ -334,5 +337,3 @@ require_once BASE_PATH . '/src/app/views/layouts/header.php';
 
   lucide.createIcons();
 </script>
-
-<?php require_once BASE_PATH . '/src/app/views/layouts/footer.php'; ?>

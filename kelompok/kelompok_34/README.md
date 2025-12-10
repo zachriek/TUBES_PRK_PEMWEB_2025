@@ -18,7 +18,8 @@
 
 ## Ringkasan Proyek  
 LokaPOS adalah aplikasi Point of Sale yang berfokus pada kebutuhan penjual UMKM dalam mengelola produk dan transaksi penjualan secara lebih cepat, akurat, dan modern. Sistem ini juga memberikan pengalaman belanja digital sederhana bagi pembeli.
-Fitur Utama:
+
+### Fitur Utama:
 - Login & Registrasi
 - Kelola Produk (Tambah, Edit, Hapus)
 - Transaksi Penjualan (Kasir)
@@ -26,6 +27,12 @@ Fitur Utama:
 - Riwayat Transaksi
 - Pencarian Produk
 - Dashboard Penjualan
+- **🆕 Multiple Payment Methods** (CASH, QRIS, Transfer Bank, Midtrans)
+- **🆕 Midtrans Payment Gateway Integration**
+  - E-Wallet (GoPay, OVO, DANA, ShopeePay)
+  - Virtual Account (BCA, BNI, BRI, Mandiri)
+  - Credit/Debit Cards (Visa, Mastercard, JCB)
+  - QRIS & Installments
 
 ---
 
@@ -51,7 +58,16 @@ Fitur Utama:
    * Buat database: `lokapos`
    * Import file `lokapos.sql` yang berada di folder `database/`
 
-4. Konfigurasi koneksi database di file:
+4. **🆕 Setup Midtrans (Opsional - untuk payment gateway):**
+   * Daftar di https://dashboard.midtrans.com/register
+   * Dapatkan Server Key & Client Key (mode Sandbox)
+   * Edit `src/app/config/midtrans.php`:
+     ```php
+     define('MIDTRANS_SERVER_KEY', 'YOUR_SERVER_KEY');
+     define('MIDTRANS_CLIENT_KEY', 'YOUR_CLIENT_KEY');
+     ```
+
+5. Konfigurasi koneksi database di file:
    ```
    src/config/database.php
    ```
@@ -64,18 +80,24 @@ Fitur Utama:
    $dbname = "lokapos";
    ```
 
-5. Jalankan aplikasi melalui browser:
+6. Jalankan aplikasi melalui browser:
    ```
    http://localhost/TUBES_PRK_PEMWEB_2025/kelompok/kelompok_34/src/
    ```
 
 ---
-
 ## Akun Demo
 
 | Role    | Email             | Password  |
 |---------|-------------------|-----------|
 | seller  | seller@gmail.com  | seller123 |
 | admin   | admin@gmail.com   | admin123  |
+
+---
+## Kartu Debit Demo
+
+| Card Number          | Expiration date   | CVV  |
+|----------------------|-------------------|------|
+| 4617 0069 5974 6656  | 01/26             | 123  |
 
 ---

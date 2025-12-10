@@ -6,15 +6,7 @@ class ProductController extends Controller
 
     public function __construct()
     {
-        requireAuth();
-        session_start();
-        
-        if ($_SESSION['user']['role'] !== 'admin') {
-            $_SESSION['error'] = 'Akses ditolak! Hanya admin yang bisa mengelola produk.';
-            header("Location: " . BASE_URL . "/pos");
-            exit;
-        }
-
+        requireAdmin();
         $this->productModel = $this->model('Product');
     }
 
@@ -22,14 +14,14 @@ class ProductController extends Controller
     {
         $data['title'] = 'Kelola Produk - ' . APP_NAME;
         $data['products'] = $this->productModel->getAll();
-        
+
         $this->view('products/index', $data);
     }
 
     public function create()
     {
         $data['title'] = 'Tambah Produk - ' . APP_NAME;
-        
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo "<pre>";
             echo "POST Data:\n";
@@ -37,23 +29,23 @@ class ProductController extends Controller
             echo "\nFILE Data:\n";
             print_r($_FILES);
             echo "</pre>";
-            
+
             $name = trim($_POST['name']);
             $price = floatval($_POST['price']);
             $stock = intval($_POST['stock']);
-            $image = 'default.jpg'; 
-            
+            $image = 'default.jpg';
+
             if (isset($_FILES['image']) && $_FILES['image']['error'] === 0) {
                 $image = $this->uploadImage($_FILES['image']);
             }
-            
+
             $result = $this->productModel->create([
                 'name' => $name,
                 'price' => $price,
                 'stock' => $stock,
                 'image' => $image
             ]);
-            
+
             if ($result) {
                 $_SESSION['success'] = 'Produk berhasil ditambahkan!';
                 header("Location: " . BASE_URL . "/product");
@@ -62,7 +54,7 @@ class ProductController extends Controller
                 $data['error'] = 'Gagal menambahkan produk!';
             }
         }
-        
+
         $this->view('products/create', $data);
     }
 
@@ -70,19 +62,19 @@ class ProductController extends Controller
     {
         $data['title'] = 'Edit Produk - ' . APP_NAME;
         $data['product'] = $this->productModel->find($id);
-        
+
         if (!$data['product']) {
             $_SESSION['error'] = 'Produk tidak ditemukan!';
             header("Location: " . BASE_URL . "/product");
             exit;
         }
-        
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $name = trim($_POST['name']);
             $price = floatval($_POST['price']);
             $stock = intval($_POST['stock']);
-            $image = $data['product']['image']; 
-            
+            $image = $data['product']['image'];
+
             if (isset($_FILES['image']) && $_FILES['image']['error'] === 0) {
                 if ($image && $image !== 'default.jpg') {
                     $oldImagePath = BASE_PATH . "/src/public/uploads/products/" . $image;
@@ -90,17 +82,17 @@ class ProductController extends Controller
                         unlink($oldImagePath);
                     }
                 }
-                
+
                 $image = $this->uploadImage($_FILES['image']);
             }
-            
+
             $result = $this->productModel->update($id, [
                 'name' => $name,
                 'price' => $price,
                 'stock' => $stock,
                 'image' => $image
             ]);
-            
+
             if ($result) {
                 $_SESSION['success'] = 'Produk berhasil diupdate!';
                 header("Location: " . BASE_URL . "/product");
@@ -109,35 +101,35 @@ class ProductController extends Controller
                 $data['error'] = 'Gagal mengupdate produk!';
             }
         }
-        
+
         $this->view('products/edit', $data);
     }
 
     public function delete($id)
     {
         $product = $this->productModel->find($id);
-        
+
         if (!$product) {
             $_SESSION['error'] = 'Produk tidak ditemukan!';
             header("Location: " . BASE_URL . "/product");
             exit;
         }
-        
+
         if ($product['image'] && $product['image'] !== 'default.jpg') {
             $imagePath = BASE_PATH . "/src/public/uploads/products/" . $product['image'];
             if (file_exists($imagePath)) {
-                unlink($imagePath); 
+                unlink($imagePath);
             }
         }
-        
+
         $result = $this->productModel->delete($id);
-        
+
         if ($result) {
             $_SESSION['success'] = 'Produk dan gambar berhasil dihapus!';
         } else {
             $_SESSION['error'] = 'Gagal menghapus produk!';
         }
-        
+
         header("Location: " . BASE_URL . "/product");
         exit;
     }
@@ -145,11 +137,11 @@ class ProductController extends Controller
     private function uploadImage($file)
     {
         $targetDir = BASE_PATH . "/src/public/uploads/products/";
-        
+
         if (!file_exists($targetDir)) {
             mkdir($targetDir, 0777, true);
         }
-        
+
         if ($file['error'] !== UPLOAD_ERR_OK) {
             $errors = [
                 UPLOAD_ERR_INI_SIZE => 'File terlalu besar (php.ini limit)',
@@ -160,31 +152,31 @@ class ProductController extends Controller
                 UPLOAD_ERR_CANT_WRITE => 'Gagal menulis file ke disk',
                 UPLOAD_ERR_EXTENSION => 'Upload dihentikan oleh extension',
             ];
-            
+
             error_log("Upload Error: " . ($errors[$file['error']] ?? 'Unknown error'));
             return 'default.jpg';
         }
-        
-        $maxSize = 5 * 1024 * 1024; 
+
+        $maxSize = 5 * 1024 * 1024;
         if ($file['size'] > $maxSize) {
             error_log("File terlalu besar: " . $file['size'] . " bytes");
             return 'default.jpg';
         }
-        
+
         $allowedMimes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $mimeType = finfo_file($finfo, $file['tmp_name']);
         finfo_close($finfo);
-        
+
         if (!in_array($mimeType, $allowedMimes)) {
             error_log("Tipe file tidak diizinkan: " . $mimeType);
             return 'default.jpg';
         }
-        
+
         $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
         $filename = uniqid('prod_', true) . '.' . strtolower($extension);
         $targetFile = $targetDir . $filename;
-        
+
         if (move_uploaded_file($file['tmp_name'], $targetFile)) {
             chmod($targetFile, 0644);
             return $filename;
@@ -193,7 +185,7 @@ class ProductController extends Controller
             return 'default.jpg';
         }
     }
-    
+
     private function getImageUrl($imageName)
     {
         if ($imageName && $imageName !== 'default.jpg') {

@@ -73,7 +73,15 @@ class AuthController extends Controller
           'role' => $user['role']
         ];
 
-        return header("Location: " . BASE_URL . "/pos");
+        $_SESSION['success'] = "Login berhasil! Selamat datang, " . $user['name'] . ".";
+
+        if ($user['role'] === 'admin') {
+          header("Location: " . BASE_URL . "/report/dashboard");
+          exit;
+        } else {
+          header("Location: " . BASE_URL . "/pos");
+          exit;
+        }
       }
 
       $error = "Email / Password salah!";
