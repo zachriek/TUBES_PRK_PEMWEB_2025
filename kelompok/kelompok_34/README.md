@@ -416,7 +416,7 @@ Menampilkan daftar lengkap transaksi dengan informasi:
 ### 12. Sistem Bantuan
 <p align="center">
   <img src="screenshots/bantuan.png" alt="bantuan" width="45%"/>
-  <img src="screenshots/bantuan.png" alt="bantuan" width="45%"/>
+  <img src="screenshots/video.png" alt="bantuan" width="45%"/>
   <img src="screenshots/panduan-kasir.png" alt="Panduan Kasir" width="45%"/>
   <img src="screenshots/panduan-admin.png" alt="Panduan Admin" width="45%"/>
   <img src="screenshots/faq.png" alt="faq" width="45%"/>
